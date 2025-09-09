@@ -58,15 +58,49 @@
 }
 
 .controls-panel {
-  background-color: #f9f9f9;
+  background-color: #2a2a2a;
   padding: 1.5rem;
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #444;
 }
 
 .controls-panel h3 {
-  margin: 0 0 1.5rem 0;
-  color: #333;
+  margin: 0 0 1rem 0;
+  color: #fff;
+}
+
+/* Tab System */
+.tab-nav {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #444;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.75rem 0.5rem;
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn:hover {
+  color: #fff;
+  background-color: #333;
+}
+
+.tab-btn.active {
+  color: #646cff;
+  border-bottom-color: #646cff;
+  background-color: #333;
+}
+
+.tab-content {
+  min-height: 300px;
 }
 
 .control-group {
@@ -77,7 +111,7 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #555;
+  color: #ddd;
 }
 
 .control-group .placeholder {
@@ -89,16 +123,51 @@
 .control-input {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #ddd;
+  border: 1px solid #555;
   border-radius: 4px;
   font-size: 1rem;
-  background-color: #fff;
+  background-color: #1a1a1a;
+  color: #fff;
 }
 
 .control-input:focus {
   outline: none;
   border-color: #646cff;
-  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.2);
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.3);
+}
+
+.control-input.error {
+  border-color: #ff6b6b;
+  background-color: #2d1a1a;
+}
+
+.control-input.error:focus {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.3);
+}
+
+.error-message {
+  color: #ff9999;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.control-input::placeholder {
+  color: #888;
+}
+
+.control-input::-webkit-input-placeholder {
+  color: #888;
+}
+
+.control-input::-moz-placeholder {
+  color: #888;
+  opacity: 1;
+}
+
+.control-input:-ms-input-placeholder {
+  color: #888;
 }
 
 input[type="range"].control-input {
@@ -137,6 +206,22 @@ input[type="range"].control-input {
 
 .export-btn:hover {
   background-color: #5a5fcf;
+}
+
+.control-btn {
+  background-color: #555;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.control-btn:hover {
+  background-color: #666;
 }
 
 @media (max-width: 1024px) {

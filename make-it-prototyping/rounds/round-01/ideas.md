@@ -14,7 +14,7 @@ Each idea below follows a recipe-first approach and can be annotated for the IDE
 ## Idea A — React + p5.js Creative Sketch (Interactive Generative Art)
 - What: Build a small React app that embeds a p5.js sketch (or canvas) with parameters controlled via UI (sliders, toggles). Export images/gifs to `assets/`.
 - Why: Fast feedback, highly visual, builds front-end discipline and communication clarity. Great for documenting “what/why/how”.
-- Recipe Source: IDE Cookbook “React + p5 starter” or a well-known tutorial on integrating p5 with React (placeholder link).
+
 - Scope:
   - React app with a single page and a clearly stated prototype goal
   - One sketch that reacts to 2–3 parameters (e.g., color palette, motion speed, density)

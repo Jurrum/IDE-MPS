@@ -14,16 +14,15 @@ MnPS-Course_Manual_25-26
 
 I’m using this course to deepen skills that connect creative making with data-driven, adaptive systems:
 
-Front-end (web) development — creative coding and clarity in communicating prototype purpose (likely React).
+1. Front-end (web) development — creative coding and clarity in communicating prototype purpose (likely React).
 
-Build a simple Neural Network — e.g., image recognition from scratch/re-creation.
+2. Build a simple Neural Network — e.g., image recognition from scratch/re-creation.
 
-Relational Databases — design + use (e.g., PostgreSQL) to support data-grounded prototypes.
+3. Relational Databases — design + use (e.g., PostgreSQL) to support data-grounded prototypes.
 
-Higher-level Digital Prototyping — orchestration (MCP), light agents/automation (n8n/Make/Zapier).
+4. Higher-level Digital Prototyping — orchestration (MCP), light agents/automation (n8n/Make/Zapier).
 These goals frame how each round is chosen and documented. 
 
-Reflection M&PS
 
 📦 Repository Structure
 make-it-prototyping/
@@ -83,16 +82,7 @@ Store small sample datasets in data/ (or link to sources).
 
 Add a DATASET.md describing schema, size, license, and acquisition steps.
 
-🧪 Round Template
 
-Each round subfolder should include the following sections in its README.md:
 
-Overview — What skill/tech is targeted? How does it support my learning goals? 
 
-Reflection M&PS
 
-Recipe Source — Link to the IDE Cookbook page or external tutorial and note any adaptations. 
-
-MnPS-Course_Manual_25-26
-
-Setup & Run

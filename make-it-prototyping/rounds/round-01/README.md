@@ -67,3 +67,12 @@ To modify the code:
 1. Edit files in the `src/` directory
 2. Changes will automatically reload in the browser
 3. Run `npm run build` to create production version
+
+
+Run wsl Ubuntu
+
+move to 
+cd /mnt/c/Users/jbdbo/Documents/Windsurf/IDE-MPS/make-it-prototyping/rounds/round-01/src/react-p5-sketch
+
+use command:
+npm run dev

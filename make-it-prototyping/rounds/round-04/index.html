@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Model Builder</title>
+  <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Control Panel -->
+    <aside id="control-panel">
+      <h2>Add Shapes</h2>
+      <div class="shape-controls">
+        <select id="shape-type">
+          <option value="cube">Cube</option>
+          <option value="sphere">Sphere</option>
+          <option value="cylinder">Cylinder</option>
+          <option value="cone">Cone</option>
+          <option value="torus">Torus</option>
+          <option value="plane">Plane</option>
+        </select>
+
+        <div class="param-group">
+          <label>Size: <input type="number" id="size" value="1" min="0.1" step="0.1"></label>
+          <label>Color: <input type="color" id="color" value="#00ff00"></label>
+          <label>Material:
+            <select id="material-type">
+              <option value="standard">Standard</option>
+              <option value="metal">Metal</option>
+              <option value="plastic">Plastic</option>
+              <option value="glass">Glass</option>
+              <option value="rubber">Rubber</option>
+              <option value="mirror">Mirror</option>
+              <option value="matte">Matte</option>
+              <option value="glossy">Glossy</option>
+            </select>
+          </label>
+        </div>
+
+        <button id="add-shape">Add Shape</button>
+        <button id="duplicate-shape">Duplicate (Ctrl+D)</button>
+        <button id="delete-shape">Delete Selected</button>
+        <button id="clear-scene">Clear Scene</button>
+      </div>
+
+      <hr>
+
+      <div class="scene-controls">
+        <h3>Scene</h3>
+        <button id="save-scene">Save Scene</button>
+        <button id="load-scene">Load Scene</button>
+      </div>
+
+      <hr>
+
+      <div class="export-controls">
+        <h3>Export</h3>
+        <button id="export-gltf">Export GLTF</button>
+        <button id="export-glb">Export GLB</button>
+      </div>
+    </aside>
+
+    <!-- 3D Viewport -->
+    <main id="viewport">
+      <canvas id="three-canvas"></canvas>
+
+      <!-- Toolbar -->
+      <div id="toolbar">
+        <button id="mode-translate" class="tool-btn active" title="Translate (G)">Move</button>
+        <button id="mode-rotate" class="tool-btn" title="Rotate (R)">Rotate</button>
+        <button id="mode-scale" class="tool-btn" title="Scale (S)">Scale</button>
+        <div class="toolbar-divider"></div>
+        <label class="snap-toggle" title="Snap to grid">
+          <input type="checkbox" id="snap-toggle">
+          <span>Snap</span>
+        </label>
+        <div class="toolbar-divider"></div>
+        <button id="cam-front" class="tool-btn cam-btn" title="Front View">Front</button>
+        <button id="cam-top" class="tool-btn cam-btn" title="Top View">Top</button>
+        <button id="cam-side" class="tool-btn cam-btn" title="Side View">Side</button>
+        <button id="cam-iso" class="tool-btn cam-btn" title="Isometric View">Iso</button>
+      </div>
+    </main>
+
+    <!-- Properties Panel -->
+    <aside id="properties-panel">
+      <h2>Properties</h2>
+      <div id="no-selection">No object selected</div>
+      <div id="object-properties" style="display: none;">
+        <h3 id="object-name">Object Name</h3>
+
+        <div class="property-group">
+          <h4>Position</h4>
+          <label>X: <input type="number" id="pos-x" step="0.1"></label>
+          <label>Y: <input type="number" id="pos-y" step="0.1"></label>
+          <label>Z: <input type="number" id="pos-z" step="0.1"></label>
+        </div>
+
+        <div class="property-group">
+          <h4>Rotation (degrees)</h4>
+          <label>X: <input type="number" id="rot-x" step="1"></label>
+          <label>Y: <input type="number" id="rot-y" step="1"></label>
+          <label>Z: <input type="number" id="rot-z" step="1"></label>
+        </div>
+
+        <div class="property-group">
+          <h4>Scale</h4>
+          <label>X: <input type="number" id="scale-x" step="0.1" min="0.1"></label>
+          <label>Y: <input type="number" id="scale-y" step="0.1" min="0.1"></label>
+          <label>Z: <input type="number" id="scale-z" step="0.1" min="0.1"></label>
+        </div>
+
+        <div class="property-group">
+          <h4>Material</h4>
+          <label>Color: <input type="color" id="mat-color"></label>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

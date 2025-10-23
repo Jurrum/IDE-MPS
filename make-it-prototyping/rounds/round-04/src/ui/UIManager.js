@@ -20,6 +20,7 @@ export class UIManager {
       duplicateShapeBtn: document.getElementById('duplicate-shape'),
       deleteShapeBtn: document.getElementById('delete-shape'),
       clearSceneBtn: document.getElementById('clear-scene'),
+      clearAllBtn: document.getElementById('clear-all'),
 
       // Scene Controls
       saveSceneBtn: document.getElementById('save-scene'),
@@ -28,6 +29,20 @@ export class UIManager {
       // Export Controls
       exportGltfBtn: document.getElementById('export-gltf'),
       exportGlbBtn: document.getElementById('export-glb'),
+
+      // Sketch Controls
+      enterSketchBtn: document.getElementById('enter-sketch'),
+      exitSketchBtn: document.getElementById('exit-sketch'),
+      sketchPlane: document.getElementById('sketch-plane'),
+      toolLine: document.getElementById('tool-line'),
+      toolRectangle: document.getElementById('tool-rectangle'),
+      toolCircle: document.getElementById('tool-circle'),
+      clearSketch: document.getElementById('clear-sketch'),
+      autoCloseContour: document.getElementById('auto-close-contour'),
+      extrudeDepth: document.getElementById('extrude-depth'),
+      extrudeSketch: document.getElementById('extrude-sketch'),
+      filletRadius: document.getElementById('fillet-radius'),
+      createFilletedBox: document.getElementById('create-filleted-box'),
 
       // Toolbar
       modeTranslate: document.getElementById('mode-translate'),
@@ -95,6 +110,19 @@ export class UIManager {
       );
     });
 
+    // Clear all button
+    this.elements.clearAllBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      Toast.confirm(
+        'Clear EVERYTHING? This will remove all shapes, sketches, and exit sketch mode. This cannot be undone!',
+        () => {
+          this.app.clearAll();
+          Toast.success('Everything cleared!');
+        }
+      );
+    });
+
     // Save/Load buttons
     this.elements.saveSceneBtn.addEventListener('click', () => {
       this.saveScene();
@@ -130,6 +158,129 @@ export class UIManager {
     this.elements.exportGlbBtn.addEventListener('click', () => {
       this.app.exportManager.exportGLB();
     });
+
+    // Sketch mode buttons
+    console.log('Sketch buttons:', {
+      enter: this.elements.enterSketchBtn,
+      exit: this.elements.exitSketchBtn,
+      plane: this.elements.sketchPlane,
+      toolLine: this.elements.toolLine,
+      toolRectangle: this.elements.toolRectangle,
+      toolCircle: this.elements.toolCircle
+    });
+
+    if (this.elements.enterSketchBtn) {
+      this.elements.enterSketchBtn.addEventListener('click', (e) => {
+        console.log('=== ENTER SKETCH HANDLER START ===');
+        console.log('1. Event object:', e);
+
+        try {
+          console.log('2. Calling stopPropagation');
+          e.stopPropagation();
+          console.log('3. Calling preventDefault');
+          e.preventDefault();
+          console.log('4. Enter sketch clicked');
+
+          console.log('5. Getting plane value');
+          const plane = this.elements.sketchPlane.value;
+          console.log('6. Plane value:', plane);
+
+          console.log('7. Checking app:', this.app);
+          console.log('8. Checking sketchManager:', this.app?.sketchManager);
+          console.log('9. sketchManager exists?', !!this.app?.sketchManager);
+
+          if (!this.app || !this.app.sketchManager) {
+            console.error('ERROR: sketchManager is undefined!');
+            return;
+          }
+
+          console.log('10. Checking enterSketchMode function');
+          console.log('11. enterSketchMode type:', typeof this.app.sketchManager.enterSketchMode);
+
+          if (typeof this.app.sketchManager.enterSketchMode !== 'function') {
+            console.error('ERROR: enterSketchMode is not a function!');
+            return;
+          }
+
+          console.log('12. About to call enterSketchMode');
+          this.app.sketchManager.enterSketchMode(plane);
+          console.log('13. enterSketchMode called successfully');
+        } catch (error) {
+          console.error('ERROR in enter sketch button handler:', error);
+          console.error('Error stack:', error.stack);
+        }
+        console.log('=== ENTER SKETCH HANDLER END ===');
+      });
+    } else {
+      console.error('ERROR: enterSketchBtn element not found!');
+    }
+
+    if (this.elements.exitSketchBtn) {
+      this.elements.exitSketchBtn.addEventListener('click', () => {
+        console.log('Exit sketch clicked');
+        this.app.sketchManager.exitSketchMode(false);
+      });
+    }
+
+    // Sketch tools
+    if (this.elements.toolLine) {
+      this.elements.toolLine.addEventListener('click', () => {
+        console.log('Line tool clicked');
+        this.app.sketchManager.setTool('line');
+        this.setActiveSketchTool('line');
+      });
+    }
+
+    if (this.elements.toolRectangle) {
+      this.elements.toolRectangle.addEventListener('click', () => {
+        console.log('Rectangle tool clicked');
+        this.app.sketchManager.setTool('rectangle');
+        this.setActiveSketchTool('rectangle');
+      });
+    }
+
+    if (this.elements.toolCircle) {
+      this.elements.toolCircle.addEventListener('click', () => {
+        console.log('Circle tool clicked');
+        this.app.sketchManager.setTool('circle');
+        this.setActiveSketchTool('circle');
+      });
+    }
+
+    if (this.elements.clearSketch) {
+      this.elements.clearSketch.addEventListener('click', () => {
+        console.log('Clear sketch clicked');
+        this.app.sketchManager.clearSketch();
+      });
+    }
+
+    if (this.elements.autoCloseContour) {
+      this.elements.autoCloseContour.addEventListener('click', () => {
+        console.log('Auto-close contour clicked');
+        this.app.sketchManager.autoCloseContour();
+      });
+    }
+
+    // Extrude button
+    if (this.elements.extrudeSketch) {
+      this.elements.extrudeSketch.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('Extrude sketch clicked');
+        const depth = parseFloat(this.elements.extrudeDepth.value);
+        this.app.extrudeSketch(depth);
+      });
+    }
+
+    // Filleted box button
+    if (this.elements.createFilletedBox) {
+      this.elements.createFilletedBox.addEventListener('click', () => {
+        console.log('Create filleted box clicked');
+        const size = parseFloat(this.elements.size.value);
+        const radius = parseFloat(this.elements.filletRadius.value);
+        this.app.createFilletedBox(size, size, size, radius);
+      });
+    }
 
     // Camera preset buttons
     console.log('Camera buttons:', {
@@ -178,6 +329,13 @@ export class UIManager {
     this.elements.modeTranslate.classList.toggle('active', mode === 'translate');
     this.elements.modeRotate.classList.toggle('active', mode === 'rotate');
     this.elements.modeScale.classList.toggle('active', mode === 'scale');
+  }
+
+  setActiveSketchTool(tool) {
+    // Update sketch tool button states
+    this.elements.toolLine.classList.toggle('active', tool === 'line');
+    this.elements.toolRectangle.classList.toggle('active', tool === 'rectangle');
+    this.elements.toolCircle.classList.toggle('active', tool === 'circle');
   }
 
   setupPropertyListeners() {

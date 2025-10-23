@@ -145,6 +145,42 @@ aside h4 {
   border-color: var(--accent-color);
 }
 
+/* Sketch Tool Buttons */
+.sketch-tool-btn {
+  padding: 8px 12px;
+  margin: 4px;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+  width: calc(33.333% - 8px);
+  display: inline-block;
+}
+
+.sketch-tool-btn:hover {
+  background-color: var(--bg-primary);
+  border-color: var(--accent-color);
+}
+
+.sketch-tool-btn.active {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+/* Sketch Controls Section */
+.sketch-controls {
+  margin-top: 8px;
+}
+
+.sketch-controls h4 {
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
 /* Form Controls */
 select, input[type="number"], input[type="color"] {
   width: 100%;

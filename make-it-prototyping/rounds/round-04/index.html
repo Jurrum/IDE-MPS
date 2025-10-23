@@ -42,6 +42,7 @@
         <button id="duplicate-shape">Duplicate (Ctrl+D)</button>
         <button id="delete-shape">Delete Selected</button>
         <button id="clear-scene">Clear Scene</button>
+        <button id="clear-all" style="background-color: #d32f2f; color: white;">Clear All</button>
       </div>
 
       <hr>
@@ -50,6 +51,34 @@
         <h3>Scene</h3>
         <button id="save-scene">Save Scene</button>
         <button id="load-scene">Load Scene</button>
+      </div>
+
+      <hr>
+
+      <div class="sketch-controls">
+        <h3>Sketch Mode</h3>
+        <button id="enter-sketch">Start Sketch (XY)</button>
+        <button id="exit-sketch">Exit Sketch</button>
+        <select id="sketch-plane">
+          <option value="XY">XY Plane</option>
+          <option value="XZ">XZ Plane</option>
+          <option value="YZ">YZ Plane</option>
+        </select>
+
+        <h4>Sketch Tools</h4>
+        <button id="tool-line" class="sketch-tool-btn">Line</button>
+        <button id="tool-rectangle" class="sketch-tool-btn">Rectangle</button>
+        <button id="tool-circle" class="sketch-tool-btn">Circle</button>
+        <button id="clear-sketch">Clear Sketch</button>
+        <button id="auto-close-contour">Auto-Close</button>
+
+        <h4>Operations</h4>
+        <label>Extrude Depth: <input type="number" id="extrude-depth" value="1" min="0.1" step="0.1"></label>
+        <button id="extrude-sketch">Extrude Sketch</button>
+
+        <h4>Filleted Shapes</h4>
+        <label>Fillet Radius: <input type="number" id="fillet-radius" value="0.1" min="0.05" step="0.05"></label>
+        <button id="create-filleted-box">Filleted Box</button>
       </div>
 
       <hr>

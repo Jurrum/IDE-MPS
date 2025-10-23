@@ -7,6 +7,8 @@ import { UIManager } from './ui/UIManager.js';
 import { CommandManager, AddObjectCommand, DeleteObjectCommand } from './utils/CommandManager.js';
 import { Toast } from './utils/Toast.js';
 import { ExportManager } from './utils/ExportManager.js';
+import { SketchManager } from './sketch/SketchManager.js';
+import { ExtrudeOperation, CSGOperations, FilletOperation } from './operations/CADOperations.js';
 
 class Application {
   constructor() {
@@ -19,6 +21,11 @@ class Application {
     );
     this.commandManager = new CommandManager();
     this.exportManager = new ExportManager(this.sceneManager.scene);
+    this.sketchManager = new SketchManager(
+      this.sceneManager,
+      this.sceneManager.camera,
+      this.sceneManager.renderer
+    );
     this.uiManager = new UIManager(this);
 
     this.init();
@@ -143,6 +150,50 @@ class Application {
     this.sceneManager.clearScene();
   }
 
+  /**
+   * Clear absolutely everything - shapes, sketches, and exit sketch mode
+   */
+  clearAll() {
+    console.log('Clearing everything...');
+
+    // Exit sketch mode if active
+    if (this.sketchManager.isSketchMode) {
+      this.sketchManager.exitSketchMode(false);
+    }
+
+    // Clear all selections
+    this.selectionManager.clearAll();
+
+    // Clear the 3D scene (all meshes)
+    this.sceneManager.clearScene();
+
+    // Clear any remaining sketch-related objects
+    const toRemove = [];
+    this.sceneManager.scene.traverse((object) => {
+      if (object.userData.isSketchLine ||
+          object.userData.isEndpointMarker ||
+          object.userData.isGapIndicator ||
+          object.userData.isConnectionLine ||
+          object.userData.isSketchPlane) {
+        toRemove.push(object);
+      }
+    });
+
+    toRemove.forEach(obj => {
+      this.sceneManager.scene.remove(obj);
+      if (obj.geometry) obj.geometry.dispose();
+      if (obj.material) obj.material.dispose();
+    });
+
+    // Reset command history
+    this.commandManager = new CommandManager();
+
+    // Clear properties panel
+    this.uiManager.clearPropertiesPanel();
+
+    console.log('Everything cleared successfully');
+  }
+
   duplicateSelected() {
     const selected = this.selectionManager.getSelected();
     if (!selected) return;
@@ -167,6 +218,90 @@ class Application {
 
     // Select the new duplicate
     this.selectionManager.select(duplicate);
+  }
+
+  // ===== CAD Operations =====
+
+  /**
+   * Extrude the current sketch into a 3D shape
+   */
+  extrudeSketch(depth = 1) {
+    // First check if contour is closed
+    const contourResult = this.sketchManager.checkContourClosure();
+
+    if (!contourResult) {
+      Toast.warning('No sketch to extrude. Draw a shape first.');
+      return;
+    }
+
+    if (!contourResult.isClosed) {
+      const gapCount = contourResult.gaps.length;
+      Toast.error(`Cannot extrude: Sketch is not closed (${gapCount} gap${gapCount > 1 ? 's' : ''} found)`);
+      return;
+    }
+
+    const shape = this.sketchManager.getSketchShape();
+    if (!shape) {
+      Toast.warning('Failed to create shape from sketch.');
+      return;
+    }
+
+    Toast.info('Extruding closed contour...');
+
+    const mesh = ExtrudeOperation.execute(shape, {
+      depth: depth,
+      bevelEnabled: false,
+      color: 0x00ff00,
+      materialType: 'standard',
+    });
+
+    if (mesh) {
+      // Get the sketch plane to properly position and orient the extruded mesh
+      const sketchPlane = this.sketchManager.currentPlane;
+
+      // Apply the sketch plane's position and rotation to the extruded mesh
+      mesh.position.copy(sketchPlane.position);
+      mesh.rotation.copy(sketchPlane.plane.rotation);
+
+      // Add a small offset in the normal direction to avoid z-fighting
+      const offset = sketchPlane.normal.clone().multiplyScalar(0.01);
+      mesh.position.add(offset);
+
+      this.sceneManager.scene.add(mesh);
+      this.selectionManager.addSelectableObject(mesh);
+      this.sketchManager.exitSketchMode(false);
+      Toast.success('Shape extruded successfully!');
+    }
+  }
+
+  /**
+   * Perform CSG union on two selected objects
+   */
+  performUnion() {
+    // Implementation would require selecting two objects
+    Toast.info('Select two objects to union (coming soon)');
+  }
+
+  /**
+   * Perform CSG subtraction
+   */
+  performSubtract() {
+    Toast.info('Select two objects to subtract (coming soon)');
+  }
+
+  /**
+   * Create a filleted box
+   */
+  createFilletedBox(width, height, depth, radius) {
+    const mesh = FilletOperation.createFilletedBox(width, height, depth, radius, {
+      color: 0x00ff00,
+      materialType: 'standard',
+    });
+
+    if (mesh) {
+      this.sceneManager.scene.add(mesh);
+      this.selectionManager.addSelectableObject(mesh);
+    }
   }
 }
 

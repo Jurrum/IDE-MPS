@@ -29,6 +29,7 @@ export class UIManager {
       // Export Controls
       exportGltfBtn: document.getElementById('export-gltf'),
       exportGlbBtn: document.getElementById('export-glb'),
+      exportStlBtn: document.getElementById('export-stl'),
 
       // Sketch Controls
       enterSketchBtn: document.getElementById('enter-sketch'),
@@ -151,6 +152,12 @@ export class UIManager {
     });
 
     // Export buttons
+    console.log('Export buttons:', {
+      gltf: this.elements.exportGltfBtn,
+      glb: this.elements.exportGlbBtn,
+      stl: this.elements.exportStlBtn
+    });
+
     this.elements.exportGltfBtn.addEventListener('click', () => {
       this.app.exportManager.exportGLTF();
     });
@@ -158,6 +165,18 @@ export class UIManager {
     this.elements.exportGlbBtn.addEventListener('click', () => {
       this.app.exportManager.exportGLB();
     });
+
+    if (this.elements.exportStlBtn) {
+      console.log('Adding STL export button listener');
+      this.elements.exportStlBtn.addEventListener('click', (e) => {
+        console.log('STL EXPORT BUTTON CLICKED!');
+        e.stopPropagation();
+        e.preventDefault();
+        this.app.exportManager.exportSTL();
+      });
+    } else {
+      console.error('ERROR: Export STL button not found in DOM!');
+    }
 
     // Sketch mode buttons
     console.log('Sketch buttons:', {

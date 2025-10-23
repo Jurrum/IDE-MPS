@@ -156,20 +156,45 @@ export class SceneManager {
   }
 
   clearScene() {
-    // Remove all meshes from scene
+    // Remove all user-created meshes from scene
     const objectsToRemove = [];
 
     this.scene.traverse((object) => {
       if (object.isMesh && object.geometry) {
-        objectsToRemove.push(object);
+        // Don't remove helper objects (grid, axes, sketch helpers)
+        const isHelper = object.userData.isSketchLine ||
+                        object.userData.isEndpointMarker ||
+                        object.userData.isGapIndicator ||
+                        object.userData.isConnectionLine ||
+                        object.userData.isSketchPlane ||
+                        object.userData.isHelper;
+
+        if (!isHelper) {
+          objectsToRemove.push(object);
+        }
       }
     });
 
+    console.log(`clearScene: Removing ${objectsToRemove.length} objects`);
+
     objectsToRemove.forEach((object) => {
-      this.scene.remove(object);
-      object.geometry.dispose();
-      object.material.dispose();
+      // Remove from parent (not necessarily the scene)
+      if (object.parent) {
+        object.parent.remove(object);
+      }
+
+      // Dispose resources
+      if (object.geometry) object.geometry.dispose();
+      if (object.material) {
+        if (Array.isArray(object.material)) {
+          object.material.forEach(mat => mat.dispose());
+        } else {
+          object.material.dispose();
+        }
+      }
     });
+
+    console.log(`clearScene: ${objectsToRemove.length} objects removed`);
   }
 
   attachTransformControls(object) {
